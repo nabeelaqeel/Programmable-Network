@@ -24,8 +24,8 @@ hosts:
     ip: 10.71.0.3/24
     ipv6: fd00:2071::3/64
   - name: h4
-    ip: 10.71.0.4/24
-    ipv6: fd00:2071::4/64
+    ip: 10.71.0.2/24
+    ipv6: fd00:2071::2/64
 
 # Each link joins two nodes.
 links:
@@ -35,4 +35,4 @@ links:
   - [h4, s2]
   - [s1, s2]
 
-  
+
