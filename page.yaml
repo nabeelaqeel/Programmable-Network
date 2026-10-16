@@ -8,22 +8,30 @@ repository: https://github.com/nabeelaqeel/Programmable-Network
 answers:
   planes:
     question: "Where are the data, control and management planes in your network?"
-    answer: ""
+    answer: "Data plane is where the switches s1,s2 and s3 forward frame between switch and host and switch to switches . 
+             Control plane is the decision making fill in the switch forwarding table.
+             Management plane is everything we configure outside mininet such as topology.yaml and build_topo.py"
   learning:
     question: "How did your switches learn which port leads to each host? Use your MAC table evidence."
-    answer: ""
+    answer: "It will mark the port correspond to which MAC Address by learning through marking the incoming frame and flooding the frame when unknown. For example , in my macs.txt port 1 correspond to 00:00:00:00:00:01. "
   kind:
     question: "Which of the four kinds of programmability is this assignment (a network described as data, then built and documented by scripts)? Why isn't it any of the other three?"
-    answer: ""
+    answer: "It is management-plane programmability . It was not data-plane programmability because we don't change how the switches process packet and forward it. 
+              It is not control-plane programmability because we dont have controller logic that change the forwarding decision.
+              It is not an programming through devices because the script drive mininet directly rather than real devices"
   two_am:
     question: "Week 1's 2 a.m. change on 40 switches: what would be different if those switches were described like your network?"
-    answer: ""
+    answer: "instead of manually ssh into the system and change 1 by 1 configuration of the switches . We would only have change the description run the script . This has a git version control where you can easily rollback to the change before."
   model:
     question: "What's the difference between your network's data model and its serialisation? Use YAML and JSON as the example."
-    answer: ""
+    answer: "Data Model is the underlying structure and organization of the network information 
+            Serialisation is  The specific text format used to save that data structure into a file so it can be stored or read by a program
+            Example: topology.yaml and topology.json represent the exact same data model, but one is written in YAML format and the other in JSON format"
   check:
     question: "Why is it better to catch bad data in check() than with pingall? What did IPv6 notice about a duplicate address that IPv4 didn't?"
-    answer: ""
+    answer: "Why check() is better: It inspects the network description before building and starting the network in Mininet, catching configuration errors instantly rather than failing later during runtime testing (pingall).
+              What IPv6 noticed: IPv6 has Duplicate Address Detection (DAD). The kernel will flag as dadfailed for duplicated address"
   git:
     question: "What does your Git history give you that copying files into folders named topology-v2-final wouldn't?"
-    answer: ""
+    answer: "git diff automatically highlights the exact line-by-line changes (additions and deletions) between versions. 
+              Copying files into folders like topology-v2-final only gives you static duplicate files without showing you what specific edits were made between them."
