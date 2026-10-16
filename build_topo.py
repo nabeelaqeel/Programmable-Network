@@ -48,6 +48,17 @@ def check_mine(spec):
                 continue
             if address not in block:
                 problems.append(f"{host['name']}: {address} isn't in your block {block}")
+
+    names = []
+    for s in spec["switches"]:
+        names.append(s)
+    for h in spec["hosts"]:
+        names.append(h["name"])
+
+    for link in spec["links"]:
+        for end in link:
+            if end not in names:
+                problems.append(f"link {link} uses {end}, which doesn't exist")
     return problems
 
 

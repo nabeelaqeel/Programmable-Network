@@ -1,0 +1,4 @@
+PROBLEM: link ['h1', 's4'] uses s4, which doesn't exist
+PROBLEM: h6 and h5 both use 10.71.0.5
+PROBLEM: h6 and h5 both use fd00:2071::5
+Fix the description and try again.
