@@ -65,7 +65,38 @@ def routing_tables_section(spec):
         <tr><td>10.7.12.0/30</td><td>directly connected</td></tr> ...</table>
     Use esc() on every value.
     """
-    return "<p>TODO: show each router's routing table.</p>"
+    html_parts = []
+    
+    for router in spec.get("routers", []):
+        html_parts.append(f"<h3>{esc(router)}</h3>")
+        html_parts.append("<table><tr><th>Destination</th><th>Next hop</th></tr>")
+        
+        entries = []
+        
+        # 1. Directly connected networks from plan(spec)
+        for intf in plan(spec).get(router, []):
+            net = intf.network
+            entries.append((net, "directly connected", net.prefixlen))
+            
+        # 2. Static routes configured for this router
+        for r in (spec.get("routes") or {}).get(router, []):
+            try:
+                to_net = ipaddress.ip_network(r["to"])
+                via_hop = str(r["via"])
+                entries.append((to_net, via_hop, to_net.prefixlen))
+            except (KeyError, TypeError, ValueError):
+                continue
+                
+        # Sort longest prefix first (highest prefix length first)
+        entries.sort(key=lambda x: x[2], reverse=True)
+        
+        # Render each entry into a table row
+        for net, next_hop, _ in entries:
+            html_parts.append(f"<tr><td>{esc(str(net))}</td><td>{esc(next_hop)}</td></tr>")
+            
+        html_parts.append("</table>")
+        
+    return "".join(html_parts)
 
 
 def mermaid_diagram(spec):
