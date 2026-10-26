@@ -1,0 +1,5 @@
+== r1 summary route test
+10.71.30.10 via 10.71.13.2 dev r1-eth2 src 10.71.13.1 uid 0 
+    cache 
+10.71.31.10 via 10.71.13.2 dev r1-eth2 src 10.71.13.1 uid 0 
+    cache 

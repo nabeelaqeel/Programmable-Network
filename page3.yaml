@@ -1,0 +1,24 @@
+# page3.yaml: the words on your Week 3 page. make_page3.py puts each answer under its question.
+# A few sentences each, in your own words, about YOUR network and YOUR evidence.
+# Leave a blank line between paragraphs. Never put your name or full student ID here.
+
+repository: https://github.com/nabeelaqeel/Programmable-Network
+
+answers:
+  design:
+    question: "Describe your design: why these routers, LANs and links, and how you chose the addresses."
+    answer: "I design 4 routers , with 4 lans , and 4 link . The 4 router all connected to 2 other router . This make all router has alternative path if 1 link is down . 
+     For addressing i choose address that can be summarized for lan1 and lan2 together and lan3 and lan4 together"
+  summary:
+    question: "Which route summarises several LANs? Which networks does it cover, why is it correct, and what else would it attract if you added a network inside its range?"
+    answer: "The route summarizing several LANs is 10.71.0.0/22, which covers the networks 10.71.0.0/23 and 10.71.2.0/23. 
+       It is correct because 10.71.0.0/22 range cover 10.71.0.0 until 10.71.3.255. 
+       It would attract 10.71.3.0/24 also if this was added to the network because it is in the range of 10.71.0.0/22"
+  failure:
+    question: "When you took a link down, what happened, and why couldn't your routes recover even though another path existed? What would have recovered?"
+    answer: "When I took a link down , the packet was dropped and could not reach the destination . This is because the alternative path was not configured in the routing table. 
+     The packet would have recovered if the alternative path was added to the routing table . Thus make the packet not dropped and reach the destination ."
+  control_plane:
+    question: "In your network, what was the control plane? Who worked out the routes, and what does that mean for a network of 40 routers?"
+    answer: "The control plane in my network was manually configured. The routes were determined by me based on the network topology and addressing scheme. 
+      For a network of 40 routers, this manual approach wuld be impractical and error-prone. I would suggest implementing dynamic routing protocols like OSPF or BGP to automatically route the packet ."

@@ -1,0 +1,7 @@
+PROBLEM: r1: next hop 10.71.13.1 for 10.71.31.0/24 isn't a neighbour on a network r1 is connected to
+PROBLEM: r1: next hop 10.71.12.1 for 10.71.30.0/23 isn't a neighbour on a network r1 is connected to
+Fix the description and try again: nothing was built.
+PROBLEM: h1 to h3: r2 has no route to 10.71.30.10
+PROBLEM: h2 to h3: r2 has no route to 10.71.30.10
+PROBLEM: h2 to h4: r2 has no route to 10.71.31.10
+Fix the description and try again: nothing was built.
