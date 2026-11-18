@@ -1,0 +1,37 @@
+repository: https://github.com/nabeelaqeel/Programmable-Network
+
+answers:
+  design:
+    question: "Describe your design: hypervisors, tenants, VNIs and addresses. Which tenants overlap, and why did you place each VM where you did?"
+    answer: |
+      Three hypervisors (hv1 10.71.0.1, hv2 10.71.0.2, hv3 10.71.0.3 on 10.71.0.0/24, MTU 9000) host three tenants: alpha (VNI 1010, 10.71.20.0/24: alpha1 on hv1, alpha2 on hv2, alpha3 on hv3), beta (VNI 2020, overlapping 10.71.20.0/24: beta1 on hv1, beta2 on hv2), and lambda (VNI 3030, 10.71.30.0/24: lambda1 on hv2, lambda2 on hv3).
+
+      Tenants alpha and beta share 10.71.20.0/24 to test overlapping IP isolation on the same hypervisors (hv1 and hv2), while spanning alpha across all three hypervisors allows observing head end replication flooding to hv3 during traffic between hv1 and hv2.
+
+  isolation:
+    question: "Two of your VMs have the same IP address. Using your evidence, explain how a ping reaches the right one — and what would have to go wrong for one tenant to see another's traffic."
+    answer: |
+      VXLAN tags each encapsulated frame with its tenant VNI, so hv2 decapsulates VNI 1010 packets strictly into br1010 (alpha2) rather than br2020 (beta2). In isolation.txt, alpha1 resolves 10.71.20.11 to 02:00:03:f2:00:0b (VNI 1010) while beta1 resolves it to 02:00:07:e4:00:0b (VNI 2020), and beta2's interface captures zero packets during alpha1's ping.
+
+      Cross tenant leakage would only occur if two tenants were assigned the same VNI or if a hypervisor enslaved a VM's port into the wrong tenant bridge (for example, putting beta2's port into br1010).
+
+  flood_learn:
+    question: "Using your evidence, explain what was flooded, to which hypervisors, and what each VTEP learned. With 50 hypervisors in one VNI, how many copies would one broadcast need — and how would EVPN change that?"
+    answer: |
+      In flood.txt, hv1 initially floods alpha1's unknown destination ARP request across VNI 1010 to both hv2 (10.71.0.2) and hv3 (10.71.0.3), which hv3's underlay captures before hv1 learns alpha2's MAC (02:00:03:f2:00:0b on 10.71.0.2) and hv3 learns alpha1's MAC (02:00:03:f2:00:0a on 10.71.0.1).
+
+      With 50 hypervisors in one VNI, head end replication would send 49 unicast copies per broadcast frame, whereas BGP EVPN replaces data plane flooding by distributing MAC and IP bindings in the control plane and answering ARP locally.
+
+  mtu:
+    question: "Compare your two MTU fixes using your measurements. Which would you choose for a data centre, what does each cost, and who has to change what?"
+    answer: |
+      In fixes.txt, Fix A (tenant MTU 1450, underlay 1500) caps unfragmented ICMP payloads at 1422 bytes (1.81 Gbits/sec iperf3), whereas Fix B (tenant MTU 1500, underlay 9000) allows full 1472 byte payloads (1.83 Gbits/sec iperf3).
+
+      Fix B is better for a data centre because tenant VMs keep standard 1500 byte Ethernet without guest reconfiguration, costing only a one time jumbo frame change on the physical underlay switches and hypervisor NICs rather than modifying every tenant VM.
+
+  p4:
+    question: "If your hypervisors' VTEPs were P4 switches running the lecture's vtep.p4, what would have to fill the vtep_encap table, and how? What would replace flood-and-learn?"
+    answer: |
+      Because a P4 data plane cannot populate its own tables, a central SDN controller or local agent would install vtep_encap entries (via P4Runtime) mapping each VNI and destination VM MAC to the target hypervisor's underlay IP.
+
+      Control plane learning, driven by cloud VM orchestration events or BGP EVPN route advertisements, would replace data plane flood and learn and static all zero flood lists.

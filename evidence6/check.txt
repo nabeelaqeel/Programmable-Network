@@ -1,0 +1,4 @@
+PROBLEM: tenant alpha: MTU 1500 + 50 bytes VXLAN overhead = 1550, exceeding underlay MTU 1500 by 50 bytes (max tenant MTU is 1450)
+PROBLEM: tenant beta: MTU 1500 + 50 bytes VXLAN overhead = 1550, exceeding underlay MTU 1500 by 50 bytes (max tenant MTU is 1450)
+PROBLEM: tenant lambda: MTU 1500 + 50 bytes VXLAN overhead = 1550, exceeding underlay MTU 1500 by 50 bytes (max tenant MTU is 1450)
+Fix the design and try again: nothing was built.

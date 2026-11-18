@@ -1,3 +1,12 @@
+### AI Declaration
+
+Tools used : Gemini
+How AI was used : 
+1. The Gemini was used to understand given code  which is build_overlay.py
+2. Gemini help generate code . this occur at build_overlay  . Where it generate the code for tenant_commands() and check_mtu()
+3. Gemini also use to explain part of the lab that is confusing  .  Gemini explain on how does the mixed happen and where to look in the logs . 
+4. Gemini help fix grammar and write a better english on the page6.yaml
+
 ### 1. What's the difference between the network's data model and its serialisation? Use your YAML and JSON files as the example.
 
 Data Model : The underlying structure and organization of the network information 

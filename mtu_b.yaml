@@ -1,0 +1,46 @@
+
+# overlay.yaml: my data centre, as data. build_overlay.py builds it; make_page6.py publishes it.
+#
+# Addressing (from the starter file's comments):
+#   - hypervisors get .1, .2, .3 ... of the underlay network, in the order listed
+#   - a tenant's VMs get .10, .11, .12 ... of the tenant's network, in the order listed
+#   - VM MAC = 02:VV:VV:VV:00:XX (tenant VNI in the middle, last byte of the VM's address at the end)
+#
+# Design:
+#   - alpha and beta share 10.71.20.0/24 on purpose; only the VNI (1010 vs 2020) keeps them apart
+#   - alpha spans 3 hypervisors, beta spans 2 (hv1, hv2), lambda spans 2 (hv2, hv3)
+#   - hv1 hosts alpha+beta, hv2 hosts alpha+beta+lambda, hv3 hosts alpha+lambda
+#   - MTUs: fix B (tenants 1500, underlay jumbo 9000)
+ 
+student_id_last4: "2071"
+ 
+underlay:
+  network: 10.71.0.0/24
+  mtu: 9000
+ 
+hypervisors: [hv1, hv2, hv3]
+ 
+tenants:
+  - name: alpha
+    vni: 1010
+    network: 10.71.20.0/24
+    mtu: 1500
+    vms:
+      - [alpha1, hv1]
+      - [alpha2, hv2]
+      - [alpha3, hv3]
+  - name: beta
+    vni: 2020
+    network: 10.71.20.0/24      # the same addresses as alpha, on purpose
+    mtu: 1500
+    vms:
+      - [beta1, hv1]
+      - [beta2, hv2]
+  - name: lambda
+    vni: 3030
+    network: 10.71.30.0/24
+    mtu: 1500
+    vms:
+      - [lambda1, hv2]
+      - [lambda2, hv3]
+ 
